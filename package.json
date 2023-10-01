@@ -11,6 +11,7 @@
     "start:dev": "nodemon ./dist",
     "watch": "tsc --watch -p ./tsconfig-build.json",
     "build": "tsc -p ./tsconfig-build.json",
+    "migrate:test": "ts-node ./tests/schema.ts",
     "test": "jest --runInBand --detectOpenHandles --forceExit --testTimeout=10000"
   },
   "devDependencies": {

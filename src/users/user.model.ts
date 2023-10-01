@@ -31,6 +31,7 @@ export interface UserDTO {
   last_name: string;
   email: string;
   password_hash: Buffer;
+  account_type?: AccountType;
 }
 
 export type UserToken = { user: User; token?: string; token_ttl?: number };
