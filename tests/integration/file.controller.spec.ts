@@ -1,31 +1,35 @@
 import "reflect-metadata";
 import "@app/http/controllers/files/file.controller";
 
-import { DownloadLink, File, FileRepository } from "@app/files";
-import Environment, { EnvConfig, envSchema, setupEnv } from "@app/internal/env";
+import { DownloadLink, File, FileRepository } from "../../src/files";
+import Environment, {
+  EnvConfig,
+  envSchema,
+  setupEnv,
+} from "../../src/internal/env";
 import { Logger, RedisStore, defaultSerializers } from "@risemaxi/octonet";
-import { UserRepository, UserService } from "@app/users";
+import { UserRepository, UserService } from "../../src/users";
 import chai, { expect } from "chai";
 import { createFile, newFileDTO } from "../helpers/file";
 import { createUser, getAuthToken, signupUser } from "../helpers/user";
 import { getError, getSuccess, repeat } from "../helpers";
 
-import APP_TYPES from "@app/config/types";
-import { AccessMiddleware } from "@app/http/middlewares/access";
+import APP_TYPES from "../../src/config/types";
+import { AccessMiddleware } from "../../src/http/middlewares/access";
 import { App } from "../../src/app";
 import { Application } from "express";
-import { AuthMiddleware } from "@app/http/middlewares/auth";
+import { AuthMiddleware } from "../../src/http/middlewares/auth";
 import { Container } from "inversify";
-import { GenericMessage } from "@app/internal/http";
-import { HistoryRepository } from "@app/histories";
-import INTERNAL_TYPES from "@app/internal/types";
+import { GenericMessage } from "../../src/internal/http";
+import { HistoryRepository } from "../../src/histories";
+import INTERNAL_TYPES from "../../src/internal/types";
 import { Knex } from "knex";
-import { PaginatedResult } from "@app/internal/postgres";
+import { PaginatedResult } from "../../src/internal/postgres";
 import Redis from "ioredis";
 import { StatusCodes } from "http-status-codes";
 import chaiAsPromised from "chai-as-promised";
-import { createPostgres } from "@app/config/postgres";
-import { createRedis } from "@app/config/redis";
+import { createPostgres } from "../../src/config/postgres";
+import { createRedis } from "../../src/config/redis";
 import faker from "faker";
 import fs from "fs";
 import request from "supertest";

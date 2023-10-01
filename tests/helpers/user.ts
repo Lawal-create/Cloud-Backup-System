@@ -1,9 +1,3 @@
-import faker from "faker";
-import { Container } from "inversify";
-import { Knex } from "knex";
-
-import TYPES from "@app/config/types";
-import INTERNAL_TYPES from "@app/internal/types";
 import {
   AuthTokenDTO,
   SignupDTO,
@@ -11,10 +5,16 @@ import {
   UserDTO,
   UserRepository,
   UserService,
-} from "@app/users";
-import { RedisStore } from "@risemaxi/octonet";
+} from "../../src/users";
+
+import { Container } from "inversify";
+import { EnvConfig } from "../../src/internal/env";
+import INTERNAL_TYPES from "../../src/internal/types";
+import { Knex } from "knex";
 import { Redis } from "ioredis";
-import { EnvConfig } from "@app/internal/env";
+import { RedisStore } from "@risemaxi/octonet";
+import TYPES from "../../src/config/types";
+import faker from "faker";
 
 export async function signupUser(
   container: Container,

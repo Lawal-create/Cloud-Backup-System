@@ -23,11 +23,11 @@
       "@app/histories": ["histories/"]
     },
     "typeRoots": ["./node_modules/@types", "typings"],
-    "types": ["reflect-metadata","jest","node"],
+    "types": ["reflect-metadata", "jest", "node"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
   "exclude": ["src/**/*.spec.ts"],
-  "include": ["typings/**/*.d.ts", "src/**/*", "test/**/*"]
+  "include": ["typings/**/*.d.ts", "src/**/*", "tests/**/*", "schema.ts"]
 }

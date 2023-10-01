@@ -1,6 +1,7 @@
-import faker from "faker";
-import { File, FileDTO } from "@app/files";
+import { File, FileDTO } from "../../src/files";
+
 import { Knex } from "knex";
+import faker from "faker";
 
 export function newFileDTO(extra: Partial<FileDTO> = {}): Partial<FileDTO> {
   return {

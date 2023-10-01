@@ -1,10 +1,14 @@
 import "reflect-metadata";
 import "@app/http/controllers/users/user.controller";
 
-import { EmailClient, EmailService } from "emails";
-import Environment, { EnvConfig, envSchema, setupEnv } from "@app/internal/env";
+import { EmailClient, EmailService } from "../../src/emails";
+import Environment, {
+  EnvConfig,
+  envSchema,
+  setupEnv,
+} from "../../src/internal/env";
 import { Logger, RedisStore, defaultSerializers } from "@risemaxi/octonet";
-import { UserRepository, UserService, UserToken } from "@app/users";
+import { UserRepository, UserService, UserToken } from "../../src/users";
 import chai, { expect } from "chai";
 import {
   getAuthToken,
@@ -15,19 +19,19 @@ import {
 import { getError, getSuccess } from "../helpers";
 import { mockEmailClient, mockSend } from "../helpers/email";
 
-import APP_TYPES from "@app/config/types";
+import APP_TYPES from "../../src/config/types";
 import { App } from "../../src/app";
 import { Application } from "express";
-import { AuthMiddleware } from "@app/http/middlewares/auth";
+import { AuthMiddleware } from "../../src/http/middlewares/auth";
 import { Container } from "inversify";
-import { GenericMessage } from "@app/internal/http";
-import INTERNAL_TYPES from "@app/internal/types";
+import { GenericMessage } from "../../src/internal/http";
+import INTERNAL_TYPES from "../../src/internal/types";
 import { Knex } from "knex";
 import Redis from "ioredis";
 import { StatusCodes } from "http-status-codes";
 import chaiAsPromised from "chai-as-promised";
-import { createPostgres } from "@app/config/postgres";
-import { createRedis } from "@app/config/redis";
+import { createPostgres } from "../../src/config/postgres";
+import { createRedis } from "../../src/config/redis";
 import faker from "faker";
 import request from "supertest";
 
