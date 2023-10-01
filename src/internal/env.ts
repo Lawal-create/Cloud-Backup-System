@@ -42,7 +42,7 @@ export function setupEnv<T extends EnvConfig>(schema: SchemaLike): T {
   }
 }
 
-export const envSchema = {
+export const envSchema = setupEnv<EnvConfig>({
   api_version: trimmedString.default("/api/v1"),
   node_env: trimmedString
     .valid("dev", "test", "production", "staging")
@@ -76,7 +76,7 @@ export const envSchema = {
     otherwise: trimmedString.optional(),
   }),
   cloudinary_url: Joi.string().uri({ scheme: "cloudinary" }).trim().required(),
-};
+});
 
 /**
  * Type definition of application env.
