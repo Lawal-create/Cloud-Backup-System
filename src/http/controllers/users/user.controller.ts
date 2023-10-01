@@ -91,7 +91,7 @@ export class UserController extends Controller<ControllerResponse> {
     if (!user) {
       throw new ApplicationError(
         StatusCodes.UNAUTHORIZED,
-        "Invalid email / password"
+        "This user does not exist"
       );
     }
 
@@ -103,7 +103,7 @@ export class UserController extends Controller<ControllerResponse> {
     if (!isMatch) {
       throw new ApplicationError(
         StatusCodes.UNAUTHORIZED,
-        "Invalid email / password"
+        "Password is incorrect"
       );
     }
 
@@ -177,7 +177,7 @@ export class UserController extends Controller<ControllerResponse> {
     if (!user) {
       throw new ApplicationError(
         StatusCodes.BAD_REQUEST,
-        "Invalid user details"
+        "We could not find any account for this email"
       );
     }
     const otpKey = this.userService.getTokenHash(

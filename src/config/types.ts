@@ -4,6 +4,9 @@ const APP_TYPES = {
   UserService: Symbol.for("UserService"),
   EmailService: Symbol.for("EmailService"),
   AuthMiddleware: Symbol.for("AuthMiddleware"),
+  AccessMiddleware: Symbol.for("AccessMiddleware"),
+  FileRepository: Symbol.for("FileRepository"),
+  HistoryRepository: Symbol.for("HistoryRepository"),
 };
 
 export default APP_TYPES;

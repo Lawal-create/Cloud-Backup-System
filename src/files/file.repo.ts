@@ -11,8 +11,11 @@ export class FileRepository extends Repository<File> {
     return file;
   }
 
-  async getById(id: string): Promise<File> {
-    return await this.db().where("id", id).first();
+  async getById(id: string, ownerID: string): Promise<File> {
+    return await this.db()
+      .where("id", id)
+      .andWhere("owner_id", ownerID)
+      .first();
   }
 
   async list(query?: FileQuery): Promise<File[] | PaginatedResult<File>> {
