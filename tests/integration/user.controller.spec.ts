@@ -2,11 +2,7 @@ import "reflect-metadata";
 import "@app/http/controllers/users/user.controller";
 
 import { EmailClient, EmailService } from "../../src/emails";
-import Environment, {
-  EnvConfig,
-  envSchema,
-  setupEnv,
-} from "../../src/internal/env";
+import Environment, { EnvConfig, envSchema } from "../../src/internal/env";
 import { Logger, RedisStore, defaultSerializers } from "@risemaxi/octonet";
 import { UserRepository, UserService, UserToken } from "../../src/users";
 import chai, { expect } from "chai";
@@ -46,7 +42,7 @@ let pg: Knex;
 let redis: Redis;
 
 beforeAll(async () => {
-  const envvars = setupEnv(envSchema);
+  const envvars = envSchema;
   const environment = new Environment(envvars);
   env = environment.env();
   const logger = new Logger({
@@ -94,7 +90,7 @@ describe("AuthController#signup", () => {
       request(app).post(`${baseURL}/signup`).send(dto)
     );
 
-    expect(errorMessage).to.eq("A user with the given details already exists");
+    expect(errorMessage).to.eq("You've already registerd this email");
   });
 
   it("should successfully sign up the user", async () => {
@@ -141,7 +137,7 @@ describe("AuthController#login", () => {
       })
     );
 
-    expect(errorMessage).to.eq("Invalid email / password");
+    expect(errorMessage).to.eq("Password is incorrect");
   });
 
   it("should fail if the email is incorrect", async () => {
@@ -157,7 +153,7 @@ describe("AuthController#login", () => {
       })
     );
 
-    expect(errorMessage).to.eq("Invalid email / password");
+    expect(errorMessage).to.eq("This user does not exist");
   });
 });
 
@@ -218,7 +214,7 @@ describe("AuthController#resetPassword", () => {
       StatusCodes.BAD_REQUEST,
       request(app).post(`${baseURL}/reset-password`).send({ email, password })
     );
-    expect(errorMessage).to.eq("Invalid user details");
+    expect(errorMessage).to.eq("We could not find any account for this email");
   });
 
   it("should fail if tokenis invalid", async () => {

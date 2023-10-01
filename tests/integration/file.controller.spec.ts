@@ -2,11 +2,7 @@ import "reflect-metadata";
 import "@app/http/controllers/files/file.controller";
 
 import { DownloadLink, File, FileRepository } from "../../src/files";
-import Environment, {
-  EnvConfig,
-  envSchema,
-  setupEnv,
-} from "../../src/internal/env";
+import Environment, { EnvConfig, envSchema } from "../../src/internal/env";
 import { Logger, RedisStore, defaultSerializers } from "@risemaxi/octonet";
 import { UserRepository, UserService } from "../../src/users";
 import chai, { expect } from "chai";
@@ -45,7 +41,7 @@ let pg: Knex;
 let redis: Redis;
 
 beforeAll(async () => {
-  const envvars = setupEnv(envSchema);
+  const envvars = envSchema;
   const environment = new Environment(envvars);
   env = environment.env();
   const logger = new Logger({
@@ -107,8 +103,8 @@ describe("FileController#uploadFile", () => {
         .field("description", dto.description)
         .attach(
           "file",
-          fs.readFileSync(`test/files/test-picture.jpeg`),
-          "test/files/test-picture.jpeg"
+          fs.readFileSync(`tests/files/test-picture.jpeg`),
+          "tests/files/test-picture.jpeg"
         )
     );
     expect(response.file_name).to.eq(dto.file_name);
