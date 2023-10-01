@@ -2,11 +2,18 @@ import "module-alias/register";
 import "reflect-metadata";
 import "./http/controllers";
 
+import { EmailClient, EmailService } from "./emails";
 import Environment, { EnvConfig, envSchema, setupEnv } from "@app/internal/env";
 import { Logger, RedisStore, defaultSerializers } from "@risemaxi/octonet";
+import { UserRepository, UserService } from "./users";
 
+import APP_TYPES from "./config/types";
+import { AccessMiddleware } from "./http/middlewares/access";
 import { App } from "./app";
+import { AuthMiddleware } from "./http/middlewares/auth";
 import { Container } from "inversify";
+import { FileRepository } from "./files";
+import { HistoryRepository } from "./histories";
 import INTERNAL_TYPES from "./internal/types";
 import { Knex } from "knex";
 import Redis from "ioredis";
@@ -56,6 +63,23 @@ const start = async () => {
       .bind<RedisStore>(INTERNAL_TYPES.RedisStore)
       .toConstantValue(redisStore);
     logger.log("successfully connected to redis");
+
+    // setup app bindings
+    container.bind<UserRepository>(APP_TYPES.UserRepository).to(UserRepository);
+    container.bind<UserService>(APP_TYPES.UserService).to(UserService);
+    container.bind<AuthMiddleware>(APP_TYPES.AuthMiddleware).to(AuthMiddleware);
+    container
+      .bind<AccessMiddleware>(APP_TYPES.AccessMiddleware)
+      .to(AccessMiddleware);
+    const emailClient = new EmailClient(env);
+    container.bind<EmailService>(APP_TYPES.EmailService).to(EmailService);
+    container
+      .bind<EmailClient>(APP_TYPES.EmailClient)
+      .toConstantValue(emailClient);
+    container.bind<FileRepository>(APP_TYPES.FileRepository).to(FileRepository);
+    container
+      .bind<HistoryRepository>(APP_TYPES.HistoryRepository)
+      .to(HistoryRepository);
 
     const app = new App(container, logger, env, () => isHealthy(redis, pg));
 
