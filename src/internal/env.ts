@@ -1,7 +1,8 @@
-import dotenv from "dotenv";
-import Joi, { SchemaLike } from "joi";
-import mapKeys from "lodash/mapKeys";
 import { DataValidationError, validate } from "./validator";
+import Joi, { SchemaLike } from "joi";
+
+import dotenv from "dotenv";
+import mapKeys from "lodash/mapKeys";
 
 const trimmedString = Joi.string().trim();
 const trimmedRequiredString = trimmedString.required();
@@ -53,7 +54,7 @@ export const envSchema = {
   }),
   port: Joi.number().required(),
   session_ttl: Joi.number().required(),
-  app_name: trimmedString.default("cloud-system-app"),
+  app_name: trimmedString.default("cloud-backup-system"),
   test_postgres_db: Joi.string().trim().when("node_env", {
     is: "test",
     then: Joi.required(),
