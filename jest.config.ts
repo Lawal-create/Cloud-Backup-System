@@ -3,12 +3,12 @@ module.exports = {
   verbose: false,
   roots: ["<rootDir>"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": "ts-jest",
   },
-  testRegex: "/test/.*\\.spec.ts",
+  testRegex: "/tests/.*\\.spec.ts",
   testPathIgnorePatterns: [],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
-    "^@app(.*)$": "<rootDir>/src$1"
-  }
+    "^@app(.*)$": "<rootDir>/src$1",
+  },
 };
