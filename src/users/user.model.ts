@@ -72,3 +72,10 @@ export interface ForgotPasswordDTO {
 export interface ForgotPasswordVerify extends ForgotPasswordQuery {
   password: string;
 }
+
+export interface UpdateTokens {
+  tokens_id: string;
+  tokens: TokenDTO[];
+  timestamp: number;
+  token: string;
+}

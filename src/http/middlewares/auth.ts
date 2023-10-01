@@ -1,11 +1,12 @@
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
+import { inject, injectable } from "inversify";
+
+import { ApplicationError } from "@app/internal/errors";
+import { BaseMiddleware } from "inversify-express-utils";
 import { EnvConfig } from "@app/internal/env";
 import INTERNAL_TYPES from "@app/internal/types";
 import { RedisStore } from "@risemaxi/octonet";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { inject, injectable } from "inversify";
-import { BaseMiddleware } from "inversify-express-utils";
-import { ApplicationError } from "@app/internal/errors";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()

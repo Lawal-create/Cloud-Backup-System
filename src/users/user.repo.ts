@@ -14,15 +14,11 @@ export class UserRepository extends Repository<User> {
 
   async create(dto: UserDTO): Promise<User> {
     try {
-      if (dto.password_hash) {
-        dto.password_hash = Buffer.from(dto.password_hash);
-      }
-
       const [user] = await this.db().insert(dto, "*");
 
       return user;
     } catch (err) {
-      //db error
+      //db error for duplicate of unique constraints
       if (err.code === "23505") {
         throw new DuplicateUser();
       }
@@ -36,7 +32,7 @@ export class UserRepository extends Repository<User> {
     if (validate(id)) {
       db = db.where("id", id);
     } else {
-      db = db.where("email", id).orWhereLike("phone", `%${id}%`);
+      db = db.whereLike("email", `%${id}%`).orWhereLike("phone", `%${id}%`);
     }
 
     return await db.first();
@@ -53,8 +49,6 @@ export class UserRepository extends Repository<User> {
   }
 
   async getByEmail(email: string): Promise<User | undefined> {
-    const user = await this.db().where("email", email).first();
-
-    return user;
+    return await this.db().where("email", email).first();
   }
 }

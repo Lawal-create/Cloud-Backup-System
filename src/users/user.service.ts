@@ -1,4 +1,4 @@
-import { AuthTokenDTO, TokenDTO } from "./user.model";
+import { AuthTokenDTO, TokenDTO, UpdateTokens } from "./user.model";
 import { compare, hash } from "bcrypt";
 import { inject, injectable } from "inversify";
 
@@ -38,24 +38,22 @@ export class UserService {
 
   async getAuthToken(dto: AuthTokenDTO) {
     const tokensId = `AUTH_TOKENS::${dto.id}`;
-    const tokensIdHash = this.getTokenHash(tokensId);
-    const timestamp = Date.now();
-    const token = await this.redisStore.commision(
-      `${dto.id}:${timestamp}`,
-      dto,
-      `${this.env.session_ttl}s`
-    );
 
-    let tokens = await this.redisStore.peek<TokenDTO[]>(tokensIdHash);
+    const timestamp = Date.now();
+
+    const token = await this.commissionNewToken(dto, timestamp);
+    let tokens = await this.getExistingTokens(tokensId);
+
     if (!tokens) {
       tokens = [];
     }
 
-    await this.redisStore.commision<TokenDTO[]>(
-      tokensId,
-      [...tokens, { timestamp, token }],
-      "30d"
-    );
+    await this.updateCommissionedTokens({
+      token,
+      tokens,
+      timestamp,
+      tokens_id: tokensId,
+    });
 
     return token;
   }
@@ -75,5 +73,32 @@ export class UserService {
     }
 
     await this.redisStore.decommission(tokensIdHash);
+  }
+
+  private async commissionNewToken(
+    dto: AuthTokenDTO,
+    timestamp: number
+  ): Promise<string> {
+    return await this.redisStore.commision(
+      `${dto.id}:${timestamp}`,
+      dto,
+      `${this.env.session_ttl}s`
+    );
+  }
+
+  private async updateCommissionedTokens(dto: UpdateTokens): Promise<string> {
+    const { timestamp, token, tokens_id, tokens } = dto;
+
+    return await this.redisStore.commision<TokenDTO[]>(
+      tokens_id,
+      [...tokens, { timestamp, token }],
+      "30d"
+    );
+  }
+
+  private async getExistingTokens(id: string) {
+    return (
+      (await this.redisStore.peek<TokenDTO[]>(this.getTokenHash(id))) || []
+    );
   }
 }
